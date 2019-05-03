@@ -6,11 +6,11 @@ import re
 PHONE_NUMBERS = [380675674432, 380672832500, 380983567721]
 
 
-def phone_number_search(argv='38067'):
+def phone_number_search(argv):
     """Search for valid phone numbers"""
 
     correct_phone_numbers = []
-    phone_number_regex = re.escape(argv) + r'[0-9]{' + str(12-len(argv)) + r'}$'
+    phone_number_regex = argv + r'[0-9]{' + str(12-len(argv)) + r'}$'
     phone_number_pattern = re.compile(phone_number_regex)
 
     for item in PHONE_NUMBERS:
@@ -33,6 +33,10 @@ def arg_parse():
 
 def main():
     """Main entry point"""
+
+    argv = arg_parse().parse_args()
+    result = phone_number_search(str(argv.integer))
+    print(result)
 
 
 if __name__ == '__main__':
