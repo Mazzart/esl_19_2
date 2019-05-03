@@ -17,14 +17,14 @@ def create_connection():
     return None
 
 
-def regexp(expr, item):
+def regexp(expr: str, item: str):
     """Regular expression function"""
 
     reg = re.compile(expr)
     return reg.search(item) is not None
 
 
-def read_from_db(conn, argv):
+def read_from_db(conn, argv) -> list:
     """Query rows that match the regular expression"""
 
     conn.create_function('REGEXP', 2, regexp)
