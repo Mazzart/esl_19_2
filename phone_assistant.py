@@ -24,13 +24,13 @@ def regexp(expr: str, item: str):
     return reg.search(item) is not None
 
 
-def read_from_db(conn, argv) -> list:
+def read_from_db(argv: str) -> list:
     """Query rows that match the regular expression"""
 
+    conn = create_connection()
     conn.create_function('REGEXP', 2, regexp)
     cur = conn.cursor()
 
-    argv = str(argv.integer)
     phone_number_regex = argv + r'[0-9]{' + str(12 - len(argv)) + r'}$'
     cur.execute("SELECT phone_number FROM phones WHERE phone_number REGEXP ? LIMIT 10",
                 (phone_number_regex,))
@@ -55,9 +55,8 @@ def main():
     """Main entry point"""
 
     argv = arg_parse().parse_args()
-    conn = create_connection()
-    result = read_from_db(conn, argv)
-    print(result)
+    argv = str(argv.integer)
+    print(read_from_db(argv))
 
 
 if __name__ == '__main__':
